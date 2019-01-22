@@ -1,0 +1,13 @@
+.idea/*
+codecept.bat
+composer.bat
+phing.bat
+composer.phar
+build.properties
+export
+./yii
+web/.htaccess
+web/index.php
+/*.pem
+/nbproject/private/
+
