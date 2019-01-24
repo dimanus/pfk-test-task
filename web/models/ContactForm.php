@@ -16,7 +16,6 @@ class ContactForm extends Model
     public $body;
     public $verifyCode;
 
-
     /**
      * @return array the validation rules.
      */
@@ -59,6 +58,7 @@ class ContactForm extends Model
 
             return true;
         }
+
         return false;
     }
 }

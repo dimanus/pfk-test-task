@@ -4,12 +4,6 @@ namespace app\models;
 
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
     private static $users = [
         '100' => [
             'id' => '100',
@@ -26,7 +20,11 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             'accessToken' => '101-token',
         ],
     ];
-
+    public $id;
+    public $username;
+    public $password;
+    public $authKey;
+    public $accessToken;
 
     /**
      * {@inheritdoc}
@@ -52,7 +50,6 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 
     /**
      * Finds user by username
-     *
      * @param string $username
      * @return static|null
      */
@@ -93,7 +90,6 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 
     /**
      * Validates password
-     *
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
