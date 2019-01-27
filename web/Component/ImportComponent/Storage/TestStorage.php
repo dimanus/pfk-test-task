@@ -1,5 +1,11 @@
 <?php
 
+namespace app\Component\ImportComponent\Storage;
+
+/**
+ * Class TestStorage
+ * @package ImportComponent\Storage
+ */
 class TestStorage implements StorageInterface
 {
     /**
@@ -8,7 +14,7 @@ class TestStorage implements StorageInterface
      */
     public function getAptekaByName($name)
     {
-        return rand(1,100);
+        return rand(1, 100);
     }
 
     /**
@@ -17,7 +23,7 @@ class TestStorage implements StorageInterface
      */
     public function getProductByName($name)
     {
-        return rand(1,100);
+        return rand(1, 100);
     }
 
     /**
@@ -26,6 +32,8 @@ class TestStorage implements StorageInterface
      */
     public function saveData($data)
     {
+        var_dump($data);
+
         return true;
     }
 }

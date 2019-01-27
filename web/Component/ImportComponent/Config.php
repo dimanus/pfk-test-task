@@ -1,5 +1,16 @@
 <?php
 
+namespace app\Component\ImportComponent;
+
+use app\Component\ImportComponent\Adapter\ImportAdapterInterface;
+use app\Component\ImportComponent\Adapter\TestAdapter;
+use app\Component\ImportComponent\Storage\StorageInterface;
+use app\Component\ImportComponent\Storage\TestStorage;
+
+/**
+ * Class Config
+ * @package ImportComponent
+ */
 class Config
 {
     /** @var int */
@@ -43,7 +54,7 @@ class Config
     /**
      * @param StorageInterface|array $storage_driver
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function setStorageDriver($storage_driver)
     {
@@ -71,7 +82,7 @@ class Config
     /**
      * @param ImportAdapterInterface|array $import_adapter
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function setImportAdapter($import_adapter)
     {
@@ -83,5 +94,4 @@ class Config
 
         return true;
     }
-
 }

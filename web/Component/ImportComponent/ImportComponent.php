@@ -1,5 +1,14 @@
 <?php
+namespace app\Component\ImportComponent;
 
+use app\Component\ImportComponent\Classes\ImportRow;
+use app\Component\ImportComponent\Classes\SellCollection;
+use app\Component\ImportComponent\Classes\SellRow;
+
+/**
+ * Class ImportComponent
+ * @package ImportComponent
+ */
 class ImportComponent
 {
     /** @var Config */
@@ -26,12 +35,19 @@ class ImportComponent
         $this->_config = $config;
     }
 
+    /**
+     * @return SellCollection
+     * @throws \Exception
+     */
     public function process()
     {
         $result = new SellCollection();
         $storage = $this->getConfig()->getStorageDriver();
         while ($row = $this->getConfig()->getImportAdapter()->getRow()){
-            $storage->getAptekaByName($row->getAptekaName());
+            /** @var $row ImportRow */
+            if($sell = new SellRow($storage->getAptekaByName($row->getAptekaName()),$storage->getProductByName($row->getProductName()),$row->getQuantity())){
+                $result->add($sell);
+            }
         }
 
         return $result;

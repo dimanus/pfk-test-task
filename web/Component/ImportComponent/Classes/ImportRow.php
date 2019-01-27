@@ -1,6 +1,12 @@
 <?php
 
-class ImportRow extends \yii\base\BaseObject
+namespace app\Component\ImportComponent\Classes;
+
+/**
+ * Class ImportRow
+ * @package ImportComponent\Classes
+ */
+class ImportRow
 {
     /** @var string */
     private $_product_name;
@@ -8,6 +14,19 @@ class ImportRow extends \yii\base\BaseObject
     private $_apteka_name;
     /** @var integer */
     private $_quantity;
+
+    /**
+     * ImportRow constructor.
+     * @param string $product_name
+     * @param string $apteka_name
+     * @param int $quantity
+     */
+    public function __construct(string $product_name, string $apteka_name, string $quantity)
+    {
+        $this->setProductName($product_name);
+        $this->setAptekaName($apteka_name);
+        $this->setQuantity((int)$quantity);
+    }
 
     /**
      * @return string
@@ -21,7 +40,7 @@ class ImportRow extends \yii\base\BaseObject
      * @param string $product_name
      * @return bool
      */
-    public function setProductName($product_name)
+    public function setProductName(string $product_name)
     {
         $this->_product_name = $product_name;
 
@@ -40,7 +59,7 @@ class ImportRow extends \yii\base\BaseObject
      * @param string $apteka_name
      * @return bool
      */
-    public function setAptekaName($apteka_name)
+    public function setAptekaName(string $apteka_name)
     {
         $this->_apteka_name = $apteka_name;
 
@@ -59,7 +78,7 @@ class ImportRow extends \yii\base\BaseObject
      * @param int $quantity
      * @return bool
      */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity)
     {
         $this->_quantity = $quantity;
 

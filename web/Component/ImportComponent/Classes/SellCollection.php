@@ -1,5 +1,10 @@
 <?php
+namespace app\Component\ImportComponent\Classes;
 
+/**
+ * Class SellCollection
+ * @package app\Component\ImportComponent\Classes
+ */
 class SellCollection
 {
     /** @var array  */
@@ -8,7 +13,7 @@ class SellCollection
     /**
      * @param $item
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function add($item)
     {

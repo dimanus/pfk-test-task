@@ -1,5 +1,10 @@
 <?php
+namespace app\Component\ImportComponent\Storage;
 
+/**
+ * Interface StorageInterface
+ * @package ImportComponent\Storage
+ */
 interface StorageInterface
 {
     /**

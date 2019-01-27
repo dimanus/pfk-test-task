@@ -1,5 +1,13 @@
 <?php
 
+namespace app\Component\ImportComponent\Adapter;
+
+use app\Component\ImportComponent\Classes\ImportRow;
+
+/**
+ * Class FileAdapter
+ * @package ImportComponent\Adapter
+ */
 class FileAdapter implements ImportAdapterInterface
 {
     /** @var string */
@@ -11,12 +19,12 @@ class FileAdapter implements ImportAdapterInterface
     public function getRow()
     {
         $result = false;
-       if ($this->_file_handler && $line = fgets($this->_file_handler,4096)){
-           $parts = explode("\t",trim($line));
-           if (count($parts)===3){
-               $result = new ImportRow(['_product_name'=>$parts[0],'_apteka_name'=>$parts[1],'_quantity'=>$parts[2]]);
-           }
-       }
+        if ($this->_file_handler && $line = fgets($this->_file_handler, 4096)) {
+            $parts = explode("\t", trim($line), 3);
+            if (count($parts) === 3) {
+                $result = new ImportRow($parts[0], $parts[1], $parts[2]);
+            }
+        }
 
         return $result;
     }
@@ -27,7 +35,7 @@ class FileAdapter implements ImportAdapterInterface
      */
     public function __construct($file_name)
     {
-        if (file_exists($file_name) && $handler = fopen($file_name, 'rb')){
+        if (file_exists($file_name) && $handler = fopen($file_name, 'rb')) {
             $this->_file_handler = $handler;
         }
     }
