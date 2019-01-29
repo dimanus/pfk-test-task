@@ -35,6 +35,14 @@ class m190124_172128_table_basic_data extends Migration
             ['Дистрибьютор 1'],
             ['Дистрибьютор 2'],
             ]);
+        $this->insert('{{%product}}',[
+            'name'=>'Двеннадцатый Препарат',
+            'id_product'=>1
+        ]);
+        $this->batchInsert('{{%cross}}',['id_distr','id_inital','type','name'],[
+            ['1','1','1','Д-Ковальчук дом 270'],
+            ['1','1','2','Двеннадцатый Препарат'],
+        ]);
     }
 
     /**

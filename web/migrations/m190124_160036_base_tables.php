@@ -55,7 +55,7 @@ class m190124_160036_base_tables extends Migration
             'quantity' => $this->integer(10)->unsigned()->notNull()->comment('Кол-во'),
             'dt_create' => $this->bigInteger(10)->unsigned()->notNull()->comment('Дата импорта'),
         ],$tableOptions);
-        $this->createIndex('{{%sells_product_id}}', '{{%sells}}', ['id_distr', 'id_product', 'id_apteka'],$tableOptions);
+        $this->createIndex('{{%sells_product_id}}', '{{%sells}}', ['id_distr', 'id_product', 'id_apteka']);
         $this->addForeignKey(
             '{{%sells_fk_id_distr}}',
             '{{%sells}}',
