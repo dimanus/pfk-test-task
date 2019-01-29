@@ -1,4 +1,5 @@
 <?php
+
 namespace app\Component\ImportComponent\Classes;
 
 /**
@@ -20,7 +21,7 @@ class SellRow
      * @param int $id_product
      * @param int $quantity
      */
-    public function __construct(int $id_apteka,int $id_product,int $quantity)
+    public function __construct(int $id_apteka, int $id_product, int $quantity)
     {
         $this->setIdApteka($id_apteka);
         $this->setIdProduct($id_product);
@@ -84,5 +85,15 @@ class SellRow
         return true;
     }
 
-
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id_apteka' => $this->getIdApteka(),
+            'id_product' => $this->getIdProduct(),
+            'quantity' => $this->getQuantity(),
+        ];
+    }
 }

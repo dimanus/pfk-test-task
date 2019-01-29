@@ -1,10 +1,11 @@
 <?php
+
 namespace app\Component\ImportComponent\Adapter;
 
-use app\Component\ImportComponent\Classes\ImportRow;
+use app\Component\ImportComponent\Classes\ObjectCollection;
 
 interface ImportAdapterInterface
 {
-    /** @return ImportRow */
-    public function getRow();
+    /** @return ObjectCollection */
+    public function getData();
 }

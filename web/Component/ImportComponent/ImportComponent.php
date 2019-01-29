@@ -1,8 +1,9 @@
 <?php
+
 namespace app\Component\ImportComponent;
 
 use app\Component\ImportComponent\Classes\ImportRow;
-use app\Component\ImportComponent\Classes\SellCollection;
+use app\Component\ImportComponent\Classes\ObjectCollection;
 use app\Component\ImportComponent\Classes\SellRow;
 
 /**
@@ -13,6 +14,56 @@ class ImportComponent
 {
     /** @var Config */
     private $_config;
+    /** @var ObjectCollection */
+    private $_import_objects;
+    /** @var ObjectCollection */
+    private $_error_objects;
+
+    /**
+     * @return ObjectCollection
+     */
+    public function getImportObjects()
+    {
+        if (!$this->_import_objects instanceof ObjectCollection) {
+            $this->_import_objects = new ObjectCollection(SellRow::class);
+        }
+
+        return $this->_import_objects;
+    }
+
+    /**
+     * @param ObjectCollection $import_objects
+     * @return bool
+     */
+    public function setImportObjects(ObjectCollection $import_objects)
+    {
+        $this->_import_objects = $import_objects;
+
+        return true;
+    }
+
+    /**
+     * @return ObjectCollection
+     */
+    public function getErrorObjects()
+    {
+        if (!$this->_error_objects instanceof ObjectCollection) {
+            $this->_error_objects = new ObjectCollection(ImportRow::class);
+        }
+
+        return $this->_error_objects;
+    }
+
+    /**
+     * @param ObjectCollection $error_objects
+     * @return bool
+     */
+    public function setErrorObjects(ObjectCollection $error_objects)
+    {
+        $this->_error_objects = $error_objects;
+
+        return true;
+    }
 
     /**
      * @return Config
@@ -36,20 +87,45 @@ class ImportComponent
     }
 
     /**
-     * @return SellCollection
+     * @return ObjectCollection
      * @throws \Exception
      */
     public function process()
     {
-        $result = new SellCollection();
+        $import_cache = $this->getConfig()->getCacheAdapter()->get();
+        if ($import_cache->count()) {
+            //Если что-то есть в кэше - работаем по нему
+            $result = $import_cache;
+        } else {
+            //Получаем данные от Адаптера
+            $result = $this->getConfig()->getImportAdapter()->getData();
+        }
         $storage = $this->getConfig()->getStorageDriver();
-        while ($row = $this->getConfig()->getImportAdapter()->getRow()){
+        foreach ($result->getItems() as $row) {
+            var_dump($row);
             /** @var $row ImportRow */
-            if($sell = new SellRow($storage->getAptekaByName($row->getAptekaName()),$storage->getProductByName($row->getProductName()),$row->getQuantity())){
-                $result->add($sell);
+            if (($apteka_id = $storage->getAptekaByName($row->getAptekaName())) && ($product_id = $storage->getProductByName($row->getProductName()))) {
+                if ($sell = new SellRow(
+                    $apteka_id,
+                    $product_id,
+                    $row->getQuantity()
+                )) {
+                    $this->getImportObjects()->add($sell);
+                }
+                else {
+                    $this->getErrorObjects()->add($row);
+                }
             }
         }
+        if ($this->getErrorObjects()->count()) {
+            $this->getConfig()->getCacheAdapter()->set($this->getErrorObjects());
+        }
+        var_dump($this->getImportObjects()->count());
+        var_dump($this->getErrorObjects()->count());
 
-        return $result;
+        return [
+            'count' => $this->getConfig()->getStorageDriver()->saveData($this->getImportObjects()),
+            $this->getErrorObjects()
+        ];
     }
 }

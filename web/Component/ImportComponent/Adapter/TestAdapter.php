@@ -3,6 +3,7 @@
 namespace app\Component\ImportComponent\Adapter;
 
 use app\Component\ImportComponent\Classes\ImportRow;
+use app\Component\ImportComponent\Classes\ObjectCollection;
 
 /**
  * Class TestAdapter
@@ -26,6 +27,16 @@ class TestAdapter implements ImportAdapterInterface
         if ($row = array_shift($this->_data)) {
             list($product_name, $apteka_name, $qty) = explode("\t", $row,3);
             $result = new ImportRow($product_name, $apteka_name, $qty);
+        }
+
+        return $result;
+    }
+
+    public function getData()
+    {
+        $result = new ObjectCollection(ImportRow::class);
+        while ($row = $this->getRow()) {
+            $result->add($row);
         }
 
         return $result;

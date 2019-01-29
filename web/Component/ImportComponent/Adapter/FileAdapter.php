@@ -3,6 +3,7 @@
 namespace app\Component\ImportComponent\Adapter;
 
 use app\Component\ImportComponent\Classes\ImportRow;
+use app\Component\ImportComponent\Classes\ObjectCollection;
 
 /**
  * Class FileAdapter
@@ -30,6 +31,20 @@ class FileAdapter implements ImportAdapterInterface
     }
 
     /**
+     * @return ObjectCollection
+     * @throws \Exception
+     */
+    public function getData()
+    {
+        $result = new ObjectCollection(ImportRow::class);
+        while ($row = $this->getRow()) {
+            $result->add($row);
+        }
+
+        return $result;
+    }
+
+    /**
      * FileAdapter constructor.
      * @param string $file_name
      */
@@ -42,6 +57,8 @@ class FileAdapter implements ImportAdapterInterface
 
     public function __destruct()
     {
-        fclose($this->_file_handler);
+        if ($this->_file_handler) {
+            fclose($this->_file_handler);
+        }
     }
 }

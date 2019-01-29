@@ -2,8 +2,10 @@
 
 namespace app\Component\ImportComponent;
 
+use app\Component\ImportComponent\Adapter\CacheInterface;
 use app\Component\ImportComponent\Adapter\ImportAdapterInterface;
 use app\Component\ImportComponent\Adapter\TestAdapter;
+use app\Component\ImportComponent\Adapter\TestCacheAdapter;
 use app\Component\ImportComponent\Storage\StorageInterface;
 use app\Component\ImportComponent\Storage\TestStorage;
 
@@ -19,6 +21,8 @@ class Config
     private $_storage_driver;
     /** @var ImportAdapterInterface */
     private $_import_adapter;
+    /** @var CacheInterface */
+    private $_cache_adapter;
 
     /**
      * @return int
@@ -32,9 +36,37 @@ class Config
      * @param int $id_distr
      * @return bool
      */
-    public function setIdDistr($id_distr)
+    public function setIdDistr(int $id_distr)
     {
         $this->id_distr = $id_distr;
+
+        return true;
+    }
+
+    /**
+     * @return CacheInterface
+     */
+    public function getCacheAdapter()
+    {
+        if (!$this->_cache_adapter) {
+            $this->_cache_adapter = new TestCacheAdapter();
+        }
+
+        return $this->_cache_adapter;
+    }
+
+    /**
+     * @param CacheInterface $cache_adapter
+     * @return bool
+     * @throws \Exception
+     */
+    public function setCacheAdapter($cache_adapter)
+    {
+        if ($cache_adapter instanceof CacheInterface) {
+            $this->_cache_adapter = $cache_adapter;
+        } else {
+            throw new \Exception('Failed to call ' . get_class($this) . '::setCacheAdapter');
+        }
 
         return true;
     }
@@ -45,7 +77,7 @@ class Config
     public function getStorageDriver()
     {
         if (!$this->_storage_driver instanceof StorageInterface) {
-            $this->_storage_driver = new TestStorage();
+            $this->_storage_driver = new TestStorage($this);
         }
 
         return $this->_storage_driver;

@@ -2,7 +2,13 @@
 
 namespace app\controllers;
 
+use app\Component\ImportComponent\Adapter\FileAdapter;
+use app\Component\ImportComponent\Adapter\YiiCacheAdapter;
+use app\Component\ImportComponent\ImportComponent;
+use app\Component\ImportComponent\Storage\YiiStorage;
+use app\models\Cross;
 use app\models\Distr;
+use app\Component\ImportComponent\Config;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -52,8 +58,17 @@ class DistrController extends Controller
      */
     public function actionView($id)
     {
+        $config = new Config();
+        $config->setIdDistr(1);
+        $config->setCacheAdapter(new YiiCacheAdapter());
+        $config->setStorageDriver(new YiiStorage($config));
+        $config->setImportAdapter(new FileAdapter('/var/www/html/Component/ImportComponent/dist2.xt'));
+        $config->getCacheAdapter()->setKey(md5('sdfasd'));
+        $component = new ImportComponent($config);
+        $result = $component->process();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'result' => $result,
         ]);
     }
 

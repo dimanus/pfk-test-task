@@ -1,6 +1,8 @@
 <?php
 namespace app\Component\ImportComponent\Storage;
 
+use app\Component\ImportComponent\Classes\ObjectCollection;
+
 /**
  * Interface StorageInterface
  * @package ImportComponent\Storage
@@ -20,8 +22,14 @@ interface StorageInterface
     public function getProductByName($name);
 
     /**
-     * @param $data
-     * @return bool
+     * @param $data ObjectCollection
+     * @return int
      */
-    public function saveData($data);
+    public function saveData(ObjectCollection $data);
+
+    /**
+     * StorageInterface constructor.
+     * @param $owner
+     */
+    public function __construct($owner);
 }

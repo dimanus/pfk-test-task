@@ -2,12 +2,18 @@
 
 namespace app\Component\ImportComponent\Storage;
 
+use app\Component\ImportComponent\Classes\ObjectCollection;
+use app\Component\ImportComponent\Config;
+
 /**
  * Class TestStorage
  * @package ImportComponent\Storage
  */
 class TestStorage implements StorageInterface
 {
+    /** @var Config */
+    private $_owner;
+
     /**
      * @param string $name
      * @return int
@@ -27,13 +33,20 @@ class TestStorage implements StorageInterface
     }
 
     /**
-     * @param $data
-     * @return bool
+     * @param $data ObjectCollection
+     * @return int
      */
-    public function saveData($data)
+    public function saveData(ObjectCollection $data)
     {
-        var_dump($data);
+        return $data->count();
+    }
 
-        return true;
+    /**
+     * StorageInterface constructor.
+     * @param $owner
+     */
+    public function __construct($owner)
+    {
+        $this->_owner = $owner;
     }
 }
