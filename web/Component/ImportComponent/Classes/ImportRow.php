@@ -84,4 +84,16 @@ class ImportRow
 
         return true;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'apteka_name' => $this->getAptekaName(),
+            'product_name' => $this->getProductName(),
+            'quantity' => $this->getQuantity()
+        ];
+    }
 }
