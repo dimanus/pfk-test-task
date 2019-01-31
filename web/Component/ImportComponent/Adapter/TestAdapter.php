@@ -11,7 +11,7 @@ use app\Component\ImportComponent\Classes\ObjectCollection;
  */
 class TestAdapter implements ImportAdapterInterface
 {
-    /** @var array  */
+    /** @var array */
     private $_data = [
         'Двеннадцатый Препарат	Д-Ковальчук дом 270	53',
         'Первый препарат	Никитина дом 73	10',
@@ -25,13 +25,17 @@ class TestAdapter implements ImportAdapterInterface
     {
         $result = null;
         if ($row = array_shift($this->_data)) {
-            list($product_name, $apteka_name, $qty) = explode("\t", $row,3);
+            list($product_name, $apteka_name, $qty) = explode("\t", $row, 3);
             $result = new ImportRow($product_name, $apteka_name, $qty);
         }
 
         return $result;
     }
 
+    /**
+     * @return ObjectCollection
+     * @throws \Exception
+     */
     public function getData()
     {
         $result = new ObjectCollection(ImportRow::class);

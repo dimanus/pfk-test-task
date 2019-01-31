@@ -87,7 +87,7 @@ class ImportComponent
     }
 
     /**
-     * @return ObjectCollection
+     * @return array
      * @throws \Exception
      */
     public function process()
@@ -102,7 +102,6 @@ class ImportComponent
         }
         $storage = $this->getConfig()->getStorageDriver();
         foreach ($result->getItems() as $row) {
-            var_dump($row);
             /** @var $row ImportRow */
             if (($apteka_id = $storage->getAptekaByName($row->getAptekaName())) && ($product_id = $storage->getProductByName($row->getProductName()))) {
                 if ($sell = new SellRow(
@@ -111,8 +110,7 @@ class ImportComponent
                     $row->getQuantity()
                 )) {
                     $this->getImportObjects()->add($sell);
-                }
-                else {
+                } else {
                     $this->getErrorObjects()->add($row);
                 }
             }
@@ -120,12 +118,9 @@ class ImportComponent
         if ($this->getErrorObjects()->count()) {
             $this->getConfig()->getCacheAdapter()->set($this->getErrorObjects());
         }
-        var_dump($this->getImportObjects()->count());
-        var_dump($this->getErrorObjects()->count());
 
         return [
             'count' => $this->getConfig()->getStorageDriver()->saveData($this->getImportObjects()),
-            $this->getErrorObjects()
         ];
     }
 }
