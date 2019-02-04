@@ -97,7 +97,7 @@ class ImportComponent
         if (!$result->count()) {
             //Получаем данные от Адаптера
             if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() === $this->getConfig()->getImportAdapter()->getRow(true)) {
-                \Yii::getLogger()->log('Header is equals',LOG_INFO);
+                //('Header is equals',LOG_INFO);
             }
             $result = $this->getConfig()->getImportAdapter()->getData();
         }

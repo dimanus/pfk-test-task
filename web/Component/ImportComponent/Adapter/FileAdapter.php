@@ -73,7 +73,7 @@ class FileAdapter implements ImportAdapterInterface
         if (file_exists($file_name) && $handler = fopen($file_name, 'rb')) {
             $this->_file_handler = $handler;
         }else {
-            \Yii::getLogger()->log('File not found');
+            //('File not found');
         }
         $this->_input_template = $input_template;
         $this->_split = $split;
