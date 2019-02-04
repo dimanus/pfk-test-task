@@ -4,16 +4,18 @@ namespace app\controllers;
 
 use app\Component\ImportComponent\Adapter\FileAdapter;
 use app\Component\ImportComponent\Adapter\YiiCacheAdapter;
+use app\Component\ImportComponent\Config;
 use app\Component\ImportComponent\ImportComponent;
 use app\Component\ImportComponent\Storage\YiiStorage;
-use app\models\Cross;
 use app\models\Distr;
-use app\Component\ImportComponent\Config;
+use app\models\DistrImportTemplate;
+use app\models\FileUploadForm;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * DistrController implements the CRUD actions for Distr model.
@@ -58,17 +60,35 @@ class DistrController extends Controller
      */
     public function actionView($id)
     {
-        $config = new Config();
-        $config->setIdDistr(1);
-        $config->setCacheAdapter(new YiiCacheAdapter());
-        $config->setStorageDriver(new YiiStorage($config));
-        $config->setImportAdapter(new FileAdapter('/var/www/html/Component/ImportComponent/dist2.xt'));
-        $config->getCacheAdapter()->setKey(md5('sdfasd'));
-        $component = new ImportComponent($config);
-        $result = $component->process();
+        $upload_form = new FileUploadForm();
+        $result = 0;
+        if (\Yii::$app->request->isPost) {
+            $config = new Config();
+            $config->setIdDistr($id);
+            $config->setCacheAdapter(new YiiCacheAdapter());
+            $config->setStorageDriver(new YiiStorage($config));
+            $upload_form->importFile = UploadedFile::getInstance($upload_form, 'importFile');
+            if ($upload_form->validate()) {
+                if ($import_template = DistrImportTemplate::findOne(['id_distr' => $id])) {
+                    $config->setImportAdapter(new FileAdapter(
+                        $upload_form->importFile->tempName,
+                        $import_template->template,
+                        $import_template->split
+                    ));
+                    if ($import_template->header) {
+                        $config->setImportFileHeader($import_template->header);
+                    }
+                }
+            }
+            $config->getCacheAdapter()->setKey(md5('sdfasd'));
+            $component = new ImportComponent($config);
+            $component->process();
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'result' => $result,
+            'component' => $component,
+            'upload_form' => $upload_form
         ]);
     }
 

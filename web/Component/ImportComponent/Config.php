@@ -23,6 +23,8 @@ class Config
     private $_import_adapter;
     /** @var CacheInterface */
     private $_cache_adapter;
+    /** @var string */
+    private $_import_file_header;
 
     /**
      * @return int
@@ -126,4 +128,25 @@ class Config
 
         return true;
     }
+
+    /**
+     * @return string
+     */
+    public function getImportFileHeader()
+    {
+        return $this->_import_file_header;
+    }
+
+    /**
+     * @param string $import_file_header
+     * @return bool
+     */
+    public function setImportFileHeader(string $import_file_header)
+    {
+        $this->_import_file_header = $import_file_header;
+
+        return true;
+    }
+
+    
 }

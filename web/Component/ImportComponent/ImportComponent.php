@@ -92,12 +92,13 @@ class ImportComponent
      */
     public function process()
     {
-        $import_cache = $this->getConfig()->getCacheAdapter()->get();
-        if ($import_cache->count()) {
-            //Если что-то есть в кэше - работаем по нему
-            $result = $import_cache;
-        } else {
+        $result = $this->getConfig()->getCacheAdapter()->get();
+        //Если что-то есть в кэше - работаем по нему
+        if (!$result->count()) {
             //Получаем данные от Адаптера
+            if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() === $this->getConfig()->getImportAdapter()->getRow(true)) {
+                \Yii::getLogger()->log('Header is equals',LOG_INFO);
+            }
             $result = $this->getConfig()->getImportAdapter()->getData();
         }
         $storage = $this->getConfig()->getStorageDriver();
@@ -110,9 +111,9 @@ class ImportComponent
                     $row->getQuantity()
                 )) {
                     $this->getImportObjects()->add($sell);
-                } else {
-                    $this->getErrorObjects()->add($row);
                 }
+            } else {
+                $this->getErrorObjects()->add($row);
             }
         }
         if ($this->getErrorObjects()->count()) {

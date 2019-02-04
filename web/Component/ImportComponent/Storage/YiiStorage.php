@@ -88,6 +88,9 @@ class YiiStorage implements StorageInterface
         return $this->_apteka_array;
     }
 
+    /**
+     * @return array
+     */
     private function getProduct()
     {
         if (!$this->_product_array) {

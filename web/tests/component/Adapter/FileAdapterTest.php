@@ -22,10 +22,10 @@ class FileAdapterTest extends TestCase
     public function setUp()
     {
         $this->_instance_config = [
-            'file_name' => YII_APP_BASE_PATH.'/Component/ImportComponent/dist2.xt',
+            'file_name' => YII_APP_BASE_PATH.'/Component/ImportComponent/dist2.txt',
             'row' => new ImportRow('Двеннадцатый Препарат', 'Д-Ковальчук дом 270', 53),
         ];
-        $this->instance = new FileAdapter($this->_instance_config['file_name']);
+        $this->instance = new FileAdapter($this->_instance_config['file_name'],'product,apteka,quantity',"\t");
     }
 
     /**

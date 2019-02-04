@@ -13,21 +13,39 @@ class FileAdapter implements ImportAdapterInterface
 {
     /** @var string */
     private $_file_handler;
+    /** @var string */
+    private $_input_template;
+    /** @var string */
+    private $_split;
 
     /**
-     * @return bool|ImportRow
+     * @param bool $get_raw
+     * @return ImportRow|bool
      */
-    public function getRow()
+    public function getRow($get_raw = false)
     {
         $result = false;
+        $product = $apteka = $quantity = 0;
         if ($this->_file_handler && $line = fgets($this->_file_handler, 4096)) {
-            $parts = explode("\t", trim($line), 3);
-            if (count($parts) === 3) {
-                $result = new ImportRow($parts[0], $parts[1], $parts[2]);
+            $parts = explode($this->_split == '\t' ? "\t" : $this->_split, trim($line));
+            $input_vars = $this->getTemplateVars();
+            if (count($parts) === count($input_vars)) {
+                extract(array_combine($input_vars, $parts), EXTR_OVERWRITE);
+                if ($product && $apteka && $quantity) {
+                    $result = new ImportRow($product, $apteka, $quantity);
+                }
+            }
+            if ($get_raw){
+                $result = $parts[0];
             }
         }
 
         return $result;
+    }
+
+    public function getTemplateVars()
+    {
+        return explode(',', $this->_input_template);
     }
 
     /**
@@ -46,13 +64,19 @@ class FileAdapter implements ImportAdapterInterface
 
     /**
      * FileAdapter constructor.
-     * @param string $file_name
+     * @param $file_name
+     * @param string $input_template
+     * @param string $split
      */
-    public function __construct($file_name)
+    public function __construct($file_name, $input_template = 'product,apteka,quantity', $split = "\t")
     {
         if (file_exists($file_name) && $handler = fopen($file_name, 'rb')) {
             $this->_file_handler = $handler;
+        }else {
+            \Yii::getLogger()->log('File not found');
         }
+        $this->_input_template = $input_template;
+        $this->_split = $split;
     }
 
     public function __destruct()

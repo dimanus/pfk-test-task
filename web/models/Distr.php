@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "{{%distr}}".
  * @property string $id_distr
@@ -9,8 +11,11 @@ namespace app\models;
  * @property Cross[] $crosses
  * @property Sells[] $sells
  */
-class Distr extends \yii\db\ActiveRecord
+class Distr extends ActiveRecord
 {
+    /** @var string */
+    private $_nameColumn = 'name';
+
     /**
      * {@inheritdoc}
      */
