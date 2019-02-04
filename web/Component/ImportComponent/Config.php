@@ -147,6 +147,4 @@ class Config
 
         return true;
     }
-
-    
 }

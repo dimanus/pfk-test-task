@@ -47,7 +47,7 @@ class ObjectCollection
         if ($this->_items && method_exists(reset($this->_items), 'toArray')) {
             foreach ($this->_items as $item) {
                 if ($add_class_name) {
-                    $result [] = array_merge($item->toArray(),['class_name'=>get_class($item)]);
+                    $result [] = array_merge($item->toArray(), ['class_name'=>get_class($item)]);
                 } else {
                     $result [] = $item->toArray();
                 }

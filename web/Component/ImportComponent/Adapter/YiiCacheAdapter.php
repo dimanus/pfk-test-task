@@ -15,7 +15,7 @@ class YiiCacheAdapter implements CacheInterface
     public function get()
     {
         $result = new ObjectCollection(ImportRow::class);
-        if ($this->_key && $data = \Yii::$app->cache->get($this->_key)){
+        if ($this->_key && $data = \Yii::$app->cache->get($this->_key)) {
             $result = $data;
         }
 
@@ -29,8 +29,8 @@ class YiiCacheAdapter implements CacheInterface
     public function set(ObjectCollection $data)
     {
         $result = false;
-        if ($this->_key){
-           $result= \Yii::$app->cache->set($this->_key, $data);
+        if ($this->_key) {
+            $result= \Yii::$app->cache->set($this->_key, $data);
         }
 
         return $result;

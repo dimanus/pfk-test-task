@@ -35,7 +35,7 @@ class FileAdapter implements ImportAdapterInterface
                     $result = new ImportRow($product, $apteka, $quantity);
                 }
             }
-            if ($get_raw){
+            if ($get_raw) {
                 $result = $parts[0];
             }
         }
@@ -72,7 +72,7 @@ class FileAdapter implements ImportAdapterInterface
     {
         if (file_exists($file_name) && $handler = fopen($file_name, 'rb')) {
             $this->_file_handler = $handler;
-        }else {
+        } else {
             //('File not found');
         }
         $this->_input_template = $input_template;
