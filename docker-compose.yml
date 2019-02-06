@@ -20,8 +20,8 @@ services:
     php:
         build: ./web
         volumes:
-            - ~/.composer-docker/cache:/root/.composer/cache:delegated
-            - ./web/:/app:delegated
+            - ~/.composer-docker/cache:/root/.composer/cache
+            - ./web/:/app
         ports:
             - '8000:80'
         restart: always
@@ -31,8 +31,8 @@ services:
     composer:
         image: yiisoftware/yii2-php:7.1-apache
         volumes:
-            - ~/.composer-docker/cache:/root/.composer/cache:delegated
-            - ./web/:/app:delegated
+            - ~/.composer-docker/cache:/root/.composer/cache
+            - ./web/:/app
         command: "yii migrate --interactive=0"
         depends_on:
             - php
