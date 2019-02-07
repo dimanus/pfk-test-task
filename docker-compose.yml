@@ -4,6 +4,8 @@ services:
         image: mysql:${MYSQL_VERSION}
         container_name: ${MYSQL_HOST}
         restart: always
+        networks:
+            - internal
         env_file:
             - ".env"
         environment:
@@ -26,10 +28,17 @@ services:
             - '8000:80'
         restart: always
         container_name: php
+        networks:
+            - internal
+        environment:
+            XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+            PHP_IDE_CONFIG: "serverName=Docker"
         depends_on:
             - mysqldb
     composer:
-        image: yiisoftware/yii2-php:7.1-apache
+        image: yiisoftware/yii2-php:7.2-apache
+        networks:
+            - internal
         volumes:
             - ~/.composer-docker/cache:/root/.composer/cache
             - ./web/:/app
@@ -40,6 +49,8 @@ services:
     myadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
+        networks:
+            - internal
         ports:
             - "8080:80"
         environment:
@@ -48,3 +59,10 @@ services:
         restart: always
         depends_on:
             - mysqldb
+networks:
+    internal:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.1.0/28
