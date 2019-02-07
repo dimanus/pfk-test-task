@@ -60,6 +60,7 @@ class DistrController extends Controller
      */
     public function actionView($id)
     {
+        $component = new ImportComponent(new Config());
         $upload_form = new FileUploadForm();
         $result = 0;
         if (\Yii::$app->request->isPost) {

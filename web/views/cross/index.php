@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_cross',
             'id_distr'=>'distr.name',
             'name',
-            'type',
+            'type'=>['label'=>'Type','value'=>function($data){return \app\models\Cross::getTypes($data->type);}],
             'id_inital'=>['label'=>'Соответствие','filter'=>'id_inital','value'=>function($data){return $data->type==\app\models\Cross::APTEKA ? $data->apteka->name:$data->product->name;}],
 
 

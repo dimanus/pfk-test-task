@@ -35,7 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
     <hr>
-
+<h4>Шаблон импорта</h4>
+    <?php echo Html::encode($model->distrTemplate->template) ?> <?= Html::a('Править',['distr-template/update','id'=>$model->distrTemplate->id]); ?>
     <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
     <?= $form->field($upload_form, 'importFile')->fileInput() ?>

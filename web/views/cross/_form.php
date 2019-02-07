@@ -12,11 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_distr')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id_distr')->dropDownList(\app\models\Distr::find()->indexBy('id_distr')->select('name')->column() ,['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->dropDownList(\app\models\Cross::getTypes()) ?>
 
     <?= $form->field($model, 'id_inital')->textInput(['maxlength' => true]) ?>
 

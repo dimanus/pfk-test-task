@@ -24,6 +24,13 @@ class Cross extends \yii\db\ActiveRecord
         return '{{%cross}}';
     }
 
+    public static function getTypes($selected = 0)
+    {
+        $result = [\app\models\Cross::APTEKA => 'Аптека', \app\models\Cross::PRODUCT => 'Продукт'];
+
+        return $selected && array_key_exists($selected, $result) ? $result[$selected] : $result;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -92,15 +92,10 @@ class ImportComponent
      */
     public function process()
     {
-        $result = $this->getConfig()->getCacheAdapter()->get();
-        //Если что-то есть в кэше - работаем по нему
-        if (!$result->count()) {
-            //Получаем данные от Адаптера
-            if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() === $this->getConfig()->getImportAdapter()->getRow(true)) {
-                //('Header is equals',LOG_INFO);
-            }
-            $result = $this->getConfig()->getImportAdapter()->getData();
+        if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() === $this->getConfig()->getImportAdapter()->getRow(true)) {
+            //('Header is equals',LOG_INFO);
         }
+        $result = $this->getConfig()->getImportAdapter()->getData();
         $storage = $this->getConfig()->getStorageDriver();
         foreach ($result->getItems() as $row) {
             /** @var $row ImportRow */

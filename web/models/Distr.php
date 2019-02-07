@@ -61,4 +61,12 @@ class Distr extends ActiveRecord
     {
         return $this->hasMany(Sells::className(), ['id_distr' => 'id_distr']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDistrTemplate()
+    {
+        return $this->hasOne(DistrImportTemplate::class, ['id_distr' => 'id_distr']);
+    }
 }
