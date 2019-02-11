@@ -11,15 +11,16 @@ interface ConfigInterface
      */
     public function getData(): ObjectCollection;
 
-    /**
-     * @param ObjectCollection $data
-     * @return mixed
-     */
-    public function setData(ObjectCollection $data);
 
     /**
      * @param ObjectCollection $data
      * @return mixed
      */
     public function setCache(ObjectCollection $data);
+
+    /**
+     * @param ObjectCollection $data
+     * @return mixed
+     */
+    public function saveData(ObjectCollection $data);
 }

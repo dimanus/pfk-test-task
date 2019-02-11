@@ -18,7 +18,7 @@ class ConfigTest implements ConfigInterface
      * @param ObjectCollection $data
      * @return mixed
      */
-    public function setData(ObjectCollection $data)
+    public function saveData(ObjectCollection $data)
     {
         // TODO: Implement setData() method.
     }

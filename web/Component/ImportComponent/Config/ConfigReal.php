@@ -18,23 +18,26 @@ class ConfigReal extends BaseConfig implements ConfigInterface
      */
     public function getData(): ObjectCollection
     {
-        // TODO: Implement getData() method.
+        return $this->getImportAdapter()->getData();
     }
 
     /**
      * @param ObjectCollection $data
-     * @return mixed
+     * @return mixed|void
      */
-    public function setData(ObjectCollection $data)
-    {
-        // TODO: Implement setData() method.
-    }
-
     public function setCache(ObjectCollection $data)
     {
-        // TODO: Implement setCache() method.
+        return $this->getCacheAdapter()->set($data);
     }
 
+    /**
+     * ConfigReal constructor.
+     * @param int $id_distr
+     * @param StorageInterface $storage_driver
+     * @param ImportAdapterInterface $import_adapter
+     * @param CacheInterface $chacke_adapter
+     * @throws \Exception
+     */
     public function __construct(
         int $id_distr,
         StorageInterface $storage_driver,
@@ -45,5 +48,14 @@ class ConfigReal extends BaseConfig implements ConfigInterface
         $this->setStorageDriver($storage_driver);
         $this->setImportAdapter($import_adapter);
         $this->setCacheAdapter($chacke_adapter);
+    }
+
+    /**
+     * @param ObjectCollection $data
+     * @return mixed
+     */
+    public function saveData(ObjectCollection $data)
+    {
+        return $this->getStorageDriver()->saveData($data);
     }
 }
