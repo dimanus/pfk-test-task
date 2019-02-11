@@ -4,7 +4,6 @@ namespace app\Component\ImportComponent\Storage;
 
 use app\Component\ImportComponent\Classes\ObjectCollection;
 use app\Component\ImportComponent\Classes\SellRow;
-use app\Component\ImportComponent\Config;
 use app\models\Cross;
 use app\models\Sells;
 
@@ -14,8 +13,8 @@ use app\models\Sells;
  */
 class YiiStorage implements StorageInterface
 {
-    /** @var Config */
-    private $_owner;
+    /** @var int */
+    private $_id_distr;
     /** @var array */
     private $_apteka_array;
     /** @var array */
@@ -46,31 +45,35 @@ class YiiStorage implements StorageInterface
     public function saveData(ObjectCollection $data)
     {
         $insert_rows = [];
-        $distr_id = $this->_owner->getIdDistr();
+        $distr_id = $this->_id_distr;
         foreach ($data->getItems() as $item) {
             /** @var $item SellRow */
             $insert_rows [] = [
-                'id_sell'=>null,
+                'id_sell' => null,
                 'id_distr' => $distr_id,
                 'id_product' => $item->getIdProduct(),
                 'id_apteka' => $item->getIdApteka(),
                 'quantity' => $item->getQuantity(),
-                'dt_create'=>time(),
+                'dt_create' => time(),
             ];
         }
         $sell_model = new Sells();
-        \Yii::$app->db->createCommand()->batchInsert(Sells::tableName(), $sell_model->attributes(), $insert_rows)->execute();
+        \Yii::$app->db->createCommand()->batchInsert(
+            Sells::tableName(),
+            $sell_model->attributes(),
+            $insert_rows
+        )->execute();
 
         return count($insert_rows);
     }
 
     /**
-     * YiiStorageInterface constructor.
-     * @param $owner
+     * YiiStorage constructor.
+     * @param int $id_distr
      */
-    public function __construct($owner)
+    public function __construct(int $id_distr)
     {
-        $this->_owner = $owner;
+        $this->_id_distr = $id_distr;
     }
 
     /**
@@ -80,7 +83,7 @@ class YiiStorage implements StorageInterface
     {
         if (!$this->_apteka_array) {
             $this->_apteka_array = Cross::find()->where([
-                'id_distr' => $this->_owner->getIdDistr(),
+                'id_distr' => $this->_id_distr,
                 'type' => Cross::APTEKA
             ])->indexBy('name')->select('id_inital')->column();
         }
@@ -95,7 +98,7 @@ class YiiStorage implements StorageInterface
     {
         if (!$this->_product_array) {
             $this->_product_array = Cross::find()->where([
-                'id_distr' => $this->_owner->getIdDistr(),
+                'id_distr' => $this->_id_distr,
                 'type' => Cross::PRODUCT
             ])->indexBy('name')->select('id_inital')->column();
         }

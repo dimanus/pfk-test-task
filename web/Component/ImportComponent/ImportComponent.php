@@ -5,6 +5,7 @@ namespace app\Component\ImportComponent;
 use app\Component\ImportComponent\Classes\ImportRow;
 use app\Component\ImportComponent\Classes\ObjectCollection;
 use app\Component\ImportComponent\Classes\SellRow;
+use app\Component\ImportComponent\Config\ConfigInterface;
 
 /**
  * Class ImportComponent
@@ -66,7 +67,7 @@ class ImportComponent
     }
 
     /**
-     * @return Config
+     * @return ConfigInterface
      */
     public function getConfig()
     {
@@ -81,7 +82,7 @@ class ImportComponent
      * ImportComponent constructor.
      * @param Config $config
      */
-    public function __construct(Config $config)
+    public function __construct(ConfigInterface $config)
     {
         $this->_config = $config;
     }
@@ -92,14 +93,14 @@ class ImportComponent
      */
     public function process()
     {
-        if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() === $this->getConfig()->getImportAdapter()->getRow(true)) {
-            //('Header is equals',LOG_INFO);
+        if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() !== $this->getConfig()->getImportAdapter()->getRow(true)) {
+            throw new \Exception('file header wrong type');
         }
-        $result = $this->getConfig()->getImportAdapter()->getData();
-        $storage = $this->getConfig()->getStorageDriver();
+        $result = $this->getConfig()->getData();
+
         foreach ($result->getItems() as $row) {
             /** @var $row ImportRow */
-            if (($apteka_id = $storage->getAptekaByName($row->getAptekaName())) && ($product_id = $storage->getProductByName($row->getProductName()))) {
+            if (($apteka_id = $this->getConfig()->getAptekaByName($row->getAptekaName())) && ($product_id = $this->getConfig()->getProductByName($row->getProductName()))) {
                 if ($sell = new SellRow(
                     $apteka_id,
                     $product_id,
@@ -116,7 +117,7 @@ class ImportComponent
         }
 
         return [
-            'count' => $this->getConfig()->getStorageDriver()->saveData($this->getImportObjects()),
+            'count' => $this->getConfig()->saveData($this->getImportObjects()),
         ];
     }
 }

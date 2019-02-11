@@ -20,11 +20,29 @@ class ConfigTest implements ConfigInterface
      */
     public function saveData(ObjectCollection $data)
     {
-        // TODO: Implement setData() method.
+        return $data->count();
     }
 
     public function setCache(ObjectCollection $data)
     {
         // TODO: Implement setCache() method.
+    }
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getAptekaByName(string $name)
+    {
+        return rand(1, 100);
+    }
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getProductByName($name)
+    {
+        return rand(1, 100);
     }
 }

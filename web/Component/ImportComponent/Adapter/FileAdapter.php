@@ -37,6 +37,8 @@ class FileAdapter implements ImportAdapterInterface
             }
             if ($get_raw) {
                 $result = $parts[0];
+            }else {
+                $result = $this->getRow();
             }
         }
 

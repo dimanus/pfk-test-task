@@ -23,10 +23,10 @@ class TestStorageTest extends TestCase
     public function setUp()
     {
         $this->_instance_config = [
-            'owner' => new Config(),
+            'id_distr' => 11,
             '' => '',
         ];
-        $this->instance = new TestStorage($this->_instance_config['owner']);
+        $this->instance = new TestStorage($this->_instance_config['id_distr']);
     }
 
     /**

@@ -31,6 +31,24 @@ class ConfigReal extends BaseConfig implements ConfigInterface
     }
 
     /**
+     * @param string $name
+     * @return int
+     */
+    public function getAptekaByName(string $name)
+    {
+        return $this->getStorageDriver()->getAptekaByName($name);
+    }
+
+    /**
+     * @param $name
+     * @return int
+     */
+    public function getProductByName($name)
+    {
+        return $this->getStorageDriver()->getProductByName($name);
+    }
+
+    /**
      * ConfigReal constructor.
      * @param int $id_distr
      * @param StorageInterface $storage_driver

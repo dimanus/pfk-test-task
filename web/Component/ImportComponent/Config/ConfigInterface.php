@@ -11,7 +11,6 @@ interface ConfigInterface
      */
     public function getData(): ObjectCollection;
 
-
     /**
      * @param ObjectCollection $data
      * @return mixed
@@ -23,4 +22,16 @@ interface ConfigInterface
      * @return mixed
      */
     public function saveData(ObjectCollection $data);
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getAptekaByName(string $name);
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getProductByName($name);
 }

@@ -11,8 +11,8 @@ use app\Component\ImportComponent\Config;
  */
 class TestStorage implements StorageInterface
 {
-    /** @var Config */
-    private $_owner;
+    /** @var int */
+    private $id_distr;
 
     /**
      * @param string $name
@@ -38,15 +38,15 @@ class TestStorage implements StorageInterface
      */
     public function saveData(ObjectCollection $data)
     {
-        return $data->count();
+            return $data->count();
     }
 
     /**
-     * StorageInterface constructor.
-     * @param $owner
+     * TestStorage constructor.
+     * @param int $id_distr
      */
-    public function __construct($owner)
+    public function __construct(int $id_distr)
     {
-        $this->_owner = $owner;
+        $this->id_distr = $id_distr;
     }
 }

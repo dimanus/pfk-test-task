@@ -79,7 +79,7 @@ class Config
     public function getStorageDriver()
     {
         if (!$this->_storage_driver instanceof StorageInterface) {
-            $this->_storage_driver = new TestStorage($this);
+            $this->_storage_driver = new TestStorage($this->id_distr);
         }
 
         return $this->_storage_driver;

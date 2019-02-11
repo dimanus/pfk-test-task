@@ -29,7 +29,7 @@ interface StorageInterface
 
     /**
      * StorageInterface constructor.
-     * @param $owner
+     * @param int $id_distr
      */
-    public function __construct($owner);
+    public function __construct(int $id_distr);
 }
