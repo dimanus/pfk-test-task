@@ -67,6 +67,8 @@ class DistrController extends Controller
                         $id,
                         $upload_form->importFile->tempName
                     ));
+//                    var_dump($component);
+//                    die();
                     $component->process();
                 }
             }catch (\Exception $e){

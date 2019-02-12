@@ -2,16 +2,18 @@
 
 namespace app\Component\ImportComponent\Config;
 
+use app\Component\ImportComponent\Adapter\TestAdapter;
 use app\Component\ImportComponent\Classes\ObjectCollection;
 
 class ConfigTest implements ConfigInterface
 {
     /**
      * @return ObjectCollection
+     * @throws \Exception
      */
     public function getData(): ObjectCollection
     {
-        // TODO: Implement getData() method.
+        return (new TestAdapter())->getData();
     }
 
     /**
@@ -25,7 +27,7 @@ class ConfigTest implements ConfigInterface
 
     public function setCache(ObjectCollection $data)
     {
-        // TODO: Implement setCache() method.
+        return true;
     }
 
     /**

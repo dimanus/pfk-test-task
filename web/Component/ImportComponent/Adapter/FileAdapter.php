@@ -27,17 +27,16 @@ class FileAdapter implements ImportAdapterInterface
         $result = false;
         $product = $apteka = $quantity = 0;
         if ($this->_file_handler && $line = fgets($this->_file_handler, 4096)) {
-            $parts = explode($this->_split == '\t' ? "\t" : $this->_split, trim($line));
+            $parts = explode($this->_split === '\t' ? "\t" : $this->_split, trim($line));
             $input_vars = $this->getTemplateVars();
             if (count($parts) === count($input_vars)) {
                 extract(array_combine($input_vars, $parts), EXTR_OVERWRITE);
                 if ($product && $apteka && $quantity) {
                     $result = new ImportRow($product, $apteka, $quantity);
                 }
-            }
-            if ($get_raw) {
+            } elseif ($get_raw) {
                 $result = $parts[0];
-            }else {
+            } else {
                 $result = $this->getRow();
             }
         }
