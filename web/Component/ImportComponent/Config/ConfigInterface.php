@@ -4,6 +4,10 @@ namespace app\Component\ImportComponent\Config;
 
 use app\Component\ImportComponent\Classes\ObjectCollection;
 
+/**
+ * Interface ConfigInterface
+ * @package app\Component\ImportComponent\Config
+ */
 interface ConfigInterface
 {
     /**
@@ -33,5 +37,5 @@ interface ConfigInterface
      * @param string $name
      * @return int
      */
-    public function getProductByName($name);
+    public function getProductByName(string $name);
 }

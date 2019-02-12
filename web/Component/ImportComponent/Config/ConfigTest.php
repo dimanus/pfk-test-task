@@ -2,16 +2,18 @@
 
 namespace app\Component\ImportComponent\Config;
 
+use app\Component\ImportComponent\Adapter\TestAdapter;
 use app\Component\ImportComponent\Classes\ObjectCollection;
 
 class ConfigTest implements ConfigInterface
 {
     /**
      * @return ObjectCollection
+     * @throws \Exception
      */
     public function getData(): ObjectCollection
     {
-        // TODO: Implement getData() method.
+        return (new TestAdapter())->getData();
     }
 
     /**
@@ -25,24 +27,26 @@ class ConfigTest implements ConfigInterface
 
     public function setCache(ObjectCollection $data)
     {
-        // TODO: Implement setCache() method.
+        return true;
     }
 
     /**
      * @param string $name
      * @return int
+     * @throws \Exception
      */
-    public function getAptekaByName(string $name)
+    public function getAptekaByName(string $name):int
     {
-        return rand(1, 100);
+        return random_int(1, 100);
     }
 
     /**
      * @param string $name
      * @return int
+     * @throws \Exception
      */
-    public function getProductByName($name)
+    public function getProductByName(string $name):int
     {
-        return rand(1, 100);
+        return random_int(1, 100);
     }
 }

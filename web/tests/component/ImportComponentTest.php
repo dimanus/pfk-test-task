@@ -5,6 +5,7 @@ namespace app\Component\ImportComponent;
 use app\Component\ImportComponent\Classes\ImportRow;
 use app\Component\ImportComponent\Classes\ObjectCollection;
 use app\Component\ImportComponent\Classes\SellRow;
+use app\Component\ImportComponent\Config\ConfigFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +23,7 @@ class ImportComponentTest extends TestCase
      */
     public function setUp()
     {
-        $this->_instance_config = new Config();
+        $this->_instance_config = (new ConfigFactory())->buildConfigTest();
         $this->instance = new ImportComponent($this->_instance_config);
     }
 

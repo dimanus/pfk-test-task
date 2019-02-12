@@ -71,10 +71,6 @@ class ImportComponent
      */
     public function getConfig()
     {
-        if (!$this->_config instanceof Config) {
-            $this->_config = new Config();
-        }
-
         return $this->_config;
     }
 
@@ -93,11 +89,7 @@ class ImportComponent
      */
     public function process()
     {
-        if ($this->getConfig()->getImportFileHeader() && $this->getConfig()->getImportFileHeader() !== $this->getConfig()->getImportAdapter()->getRow(true)) {
-            throw new \Exception('file header wrong type');
-        }
         $result = $this->getConfig()->getData();
-
         foreach ($result->getItems() as $row) {
             /** @var $row ImportRow */
             if (($apteka_id = $this->getConfig()->getAptekaByName($row->getAptekaName())) && ($product_id = $this->getConfig()->getProductByName($row->getProductName()))) {
@@ -113,7 +105,7 @@ class ImportComponent
             }
         }
         if ($this->getErrorObjects()->count()) {
-            $this->getConfig()->getCacheAdapter()->set($this->getErrorObjects());
+            $this->getConfig()->setCache($this->getErrorObjects());
         }
 
         return [

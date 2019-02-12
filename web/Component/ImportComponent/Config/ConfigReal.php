@@ -11,14 +11,23 @@ use app\Component\ImportComponent\Storage\StorageInterface;
  * Class ConfigReal
  * @package app\Component\ImportComponent\Config
  */
-class ConfigReal extends BaseConfig implements ConfigInterface
+class ConfigReal implements ConfigInterface
 {
+    /** @var int */
+    private $id_distr;
+    /** @var StorageInterface */
+    private $_storage_driver;
+    /** @var ImportAdapterInterface */
+    private $_import_adapter;
+    /** @var CacheInterface */
+    private $_cache_adapter;
+
     /**
      * @return ObjectCollection
      */
     public function getData(): ObjectCollection
     {
-        return $this->getImportAdapter()->getData();
+        return $this->_import_adapter->getData();
     }
 
     /**
@@ -27,25 +36,25 @@ class ConfigReal extends BaseConfig implements ConfigInterface
      */
     public function setCache(ObjectCollection $data)
     {
-        return $this->getCacheAdapter()->set($data);
+        $this->_cache_adapter->set($data);
     }
 
     /**
      * @param string $name
      * @return int
      */
-    public function getAptekaByName(string $name)
+    public function getAptekaByName(string $name): int
     {
-        return $this->getStorageDriver()->getAptekaByName($name);
+        return $this->_storage_driver->getAptekaByName($name);
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return int
      */
-    public function getProductByName($name)
+    public function getProductByName(string $name): int
     {
-        return $this->getStorageDriver()->getProductByName($name);
+        return $this->_storage_driver->getProductByName($name);
     }
 
     /**
@@ -62,10 +71,10 @@ class ConfigReal extends BaseConfig implements ConfigInterface
         ImportAdapterInterface $import_adapter,
         CacheInterface $chacke_adapter
     ) {
-        $this->setIdDistr($id_distr);
-        $this->setStorageDriver($storage_driver);
-        $this->setImportAdapter($import_adapter);
-        $this->setCacheAdapter($chacke_adapter);
+        $this->id_distr = $id_distr;
+        $this->_storage_driver = $storage_driver;
+        $this->_import_adapter = $import_adapter;
+        $this->_cache_adapter = $chacke_adapter;
     }
 
     /**
@@ -74,6 +83,6 @@ class ConfigReal extends BaseConfig implements ConfigInterface
      */
     public function saveData(ObjectCollection $data)
     {
-        return $this->getStorageDriver()->saveData($data);
+        return $this->_storage_driver->saveData($data);
     }
 }
