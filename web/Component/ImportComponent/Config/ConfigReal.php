@@ -63,7 +63,6 @@ class ConfigReal implements ConfigInterface
      * @param StorageInterface $storage_driver
      * @param ImportAdapterInterface $import_adapter
      * @param CacheInterface $chacke_adapter
-     * @throws \Exception
      */
     public function __construct(
         int $id_distr,
