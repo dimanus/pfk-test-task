@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_distr'=>'distr.name',
             'name',
             'type'=>['label'=>'Type','value'=>function($data){return \app\models\Cross::getTypes($data->type);}],
-            'id_inital'=>['label'=>'Соответствие','filter'=>'id_inital','value'=>function($data){return $data->type==\app\models\Cross::APTEKA ? $data->apteka->name:$data->product->name;}],
+            'id_inital'=>['label'=>'Соответствие','filter'=>'id_inital','value'=>function($data){return $data->type==\app\models\Cross::APTEKA ? ($data->apteka ? $data->apteka->name: ''):($data->product ? $data->product->name: '');}],
 
 
             ['class' => 'yii\grid\ActionColumn'],
