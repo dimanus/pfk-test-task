@@ -5,30 +5,13 @@ namespace app\controllers;
 use app\models\Cross;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * CrossController implements the CRUD actions for Cross model.
  */
-class CrossController extends Controller
+class CrossController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Cross models.
      * @return mixed

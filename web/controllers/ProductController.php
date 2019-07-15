@@ -5,30 +5,14 @@ namespace app\controllers;
 use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\log\Logger;
 use yii\web\NotFoundHttpException;
 
 /**
  * ProductController implements the CRUD actions for Product model.
  */
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Product models.
      * @return mixed
@@ -117,7 +101,11 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $exception) {
+            Yii::getLogger()->log($exception->getMessage(), Logger::LEVEL_ERROR);
+        }
 
         return $this->redirect(['index']);
     }

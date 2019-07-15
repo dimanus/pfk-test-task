@@ -5,30 +5,14 @@ namespace app\controllers;
 use app\models\Sells;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\log\Logger;
 use yii\web\NotFoundHttpException;
 
 /**
  * SellController implements the CRUD actions for Sells model.
  */
-class SellController extends Controller
+class SellController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Sells models.
      * @return mixed
@@ -117,7 +101,11 @@ class SellController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $exception) {
+            Yii::getLogger()->log($exception->getMessage(), Logger::LEVEL_ERROR);
+        }
 
         return $this->redirect(['index']);
     }

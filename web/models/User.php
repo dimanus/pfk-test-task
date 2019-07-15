@@ -2,24 +2,11 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use yii\base\BaseObject;
+use yii\web\IdentityInterface;
+
+class User extends BaseObject implements IdentityInterface
 {
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
     public $id;
     public $username;
     public $password;
@@ -31,7 +18,12 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        $user = null;
+        if ($userObj = Users::findOne($id)) {
+            $user = new self($userObj->toUserArray());
+        }
+
+        return $user;
     }
 
     /**
@@ -39,10 +31,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
+        /** @var Users $userObj */
+        if ($userObj = Users::find()->where('token = :token', [':token' => $token])->one()) {
+            return new static($userObj->toUserArray());
         }
 
         return null;
@@ -55,10 +46,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+        /** @var Users $userObj */
+        if ($userObj = Users::find()->where('username = :user', [':user' => $username])->one()) {
+            return new static($userObj->toUserArray());
         }
 
         return null;

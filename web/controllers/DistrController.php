@@ -8,31 +8,15 @@ use app\models\Distr;
 use app\models\FileUploadForm;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\log\Logger;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
  * DistrController implements the CRUD actions for Distr model.
  */
-class DistrController extends Controller
+class DistrController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Distr models.
      * @return mixed
@@ -59,7 +43,7 @@ class DistrController extends Controller
         $config_factory = new Config\ConfigFactory();
         $component = new ImportComponent($config_factory->buildConfigTest());
         $upload_form = new FileUploadForm();
-        if (\Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             try {
                 $upload_form->importFile = UploadedFile::getInstance($upload_form, 'importFile');
                 if ($upload_form->validate()) {
@@ -71,15 +55,15 @@ class DistrController extends Controller
 //                    die();
                     $component->process();
                 }
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 var_dump($e->getMessage());
             }
         }
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'component' => $component,
-            'upload_form' => $upload_form
+            'model'       => $this->findModel($id),
+            'component'   => $component,
+            'upload_form' => $upload_form,
         ]);
     }
 
@@ -143,7 +127,11 @@ class DistrController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $exception) {
+            Yii::getLogger()->log($exception->getMessage(), Logger::LEVEL_ERROR);
+        }
 
         return $this->redirect(['index']);
     }

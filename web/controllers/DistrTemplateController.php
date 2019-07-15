@@ -2,33 +2,17 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\DistrImportTemplate;
+use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use yii\log\Logger;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * DistrTemplateController implements the CRUD actions for DistrImportTemplate model.
  */
-class DistrTemplateController extends Controller
+class DistrTemplateController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all DistrImportTemplate models.
      * @return mixed
@@ -65,7 +49,6 @@ class DistrTemplateController extends Controller
     public function actionCreate()
     {
         $model = new DistrImportTemplate();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -85,7 +68,6 @@ class DistrTemplateController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -104,7 +86,11 @@ class DistrTemplateController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $exception) {
+            Yii::getLogger()->log($exception->getMessage(), Logger::LEVEL_ERROR);
+        }
 
         return $this->redirect(['index']);
     }
@@ -121,7 +107,6 @@ class DistrTemplateController extends Controller
         if (($model = DistrImportTemplate::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

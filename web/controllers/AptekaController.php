@@ -5,30 +5,13 @@ namespace app\controllers;
 use app\models\Apteka;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * AptekaController implements the CRUD actions for Apteka model.
  */
-class AptekaController extends Controller
+class AptekaController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Apteka models.
      * @return mixed
